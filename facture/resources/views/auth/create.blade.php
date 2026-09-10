@@ -1,216 +1,216 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.guest')
 
-    <title>Créer un compte</title>
+@section('title', 'Créer un compte')
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+@section('content')
 
-        .container {
-            background: white;
-            width: 400px;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    .container {
+        background: white;
+        width: 400px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
 
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
+    h1 {
+        text-align: center;
+        margin-bottom: 25px;
+    }
 
-        .errors {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
 
-        .errors ul {
-            margin: 5px 0 0 20px;
-            padding: 0;
-        }
+    .errors {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+    .errors ul {
+        margin: 5px 0 0 20px;
+        padding: 0;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
 
-        input:focus {
-            border-color: #007bff;
-            outline: none;
-        }
+    input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-        .field-error {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 5px;
-        }
+    input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    .field-error {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
-<body>
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
 
 <div class="container">
 
-    <h1>Créer un compte</h1>
 
-    {{-- Message de succès --}}
-    @if (session('success'))
-        <div class="success">
-            {{ session('success') }}
-        </div>
-    @endif
+<h1>Créer un compte</h1>
 
-    {{-- Erreurs générales --}}
-    @if ($errors->any())
-        <div class="errors">
-            <strong>Veuillez corriger les erreurs :</strong>
+{{-- Message de succès --}}
+@if (session('success'))
+    <div class="success">
+        {{ session('success') }}
+    </div>
+@endif
 
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+{{-- Erreurs générales --}}
+@if ($errors->any())
+    <div class="errors">
+        <strong>Veuillez corriger les erreurs :</strong>
 
-    {{-- Formulaire --}}
-    <form method="POST" action="/users">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-        @csrf
+{{-- Formulaire --}}
+<form method="POST" action="/users">
 
-        {{-- Nom --}}
-        <div class="form-group">
-            <label for="name">Nom</label>
+    @csrf
 
-            <input
-                type="text"
-                id="name"
-                name="name"
-                value="{{ old('name') }}"
-                placeholder="Entrez votre nom"
-            >
+    {{-- Nom --}}
+    <div class="form-group">
 
-            @error('name')
-                <div class="field-error">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+        <label for="name">Nom</label>
 
-        {{-- Email --}}
-        <div class="form-group">
-            <label for="email">Email</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ old('name') }}"
+            placeholder="Entrez votre nom"
+        >
 
-            <input
-                type="email"
-                id="email"
-                name="email"
-                value="{{ old('email') }}"
-                placeholder="Entrez votre email"
-            >
+        @error('name')
+            <div class="field-error">
+                {{ $message }}
+            </div>
+        @enderror
 
-            @error('email')
-                <div class="field-error">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+    </div>
 
-        {{-- Mot de passe --}}
-        <div class="form-group">
-            <label for="password">Mot de passe</label>
+    {{-- Email --}}
+    <div class="form-group">
 
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Entrez votre mot de passe"
-            >
+        <label for="email">Email</label>
 
-            @error('password')
-                <div class="field-error">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            value="{{ old('email') }}"
+            placeholder="Entrez votre email"
+        >
 
-        {{-- Confirmation --}}
-        <div class="form-group">
-            <label for="password_confirmation">
-                Confirmer le mot de passe
-            </label>
+        @error('email')
+            <div class="field-error">
+                {{ $message }}
+            </div>
+        @enderror
 
-            <input
-                type="password"
-                id="password_confirmation"
-                name="password_confirmation"
-                placeholder="Confirmez votre mot de passe"
-            >
+    </div>
 
-            @error('password_confirmation')
-                <div class="field-error">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+    {{-- Mot de passe --}}
+    <div class="form-group">
 
-        <button type="submit">
-            Créer le compte
-        </button>
+        <label for="password">Mot de passe</label>
 
-    </form>
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Entrez votre mot de passe"
+        >
+
+        @error('password')
+            <div class="field-error">
+                {{ $message }}
+            </div>
+        @enderror
+
+    </div>
+
+    {{-- Confirmation --}}
+    <div class="form-group">
+
+        <label for="password_confirmation">
+            Confirmer le mot de passe
+        </label>
+
+        <input
+            type="password"
+            id="password_confirmation"
+            name="password_confirmation"
+            placeholder="Confirmez votre mot de passe"
+        >
+
+        @error('password_confirmation')
+            <div class="field-error">
+                {{ $message }}
+            </div>
+        @enderror
+
+    </div>
+
+    <button type="submit">
+        Créer le compte
+    </button>
+
+</form>
 
 </div>
 
-</body>
-</html>
+@endsection

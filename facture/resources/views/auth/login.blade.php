@@ -1,9 +1,20 @@
+@extends('layouts.guest')
+
+@section('title', 'Connexion')
+
+@section('content')
+
 <form method="POST" action="/login">
     @csrf
 
-    <input type="email" name="email" placeholder="Email">
 
-    <input type="password" name="password" placeholder="Mot de passe">
+<input type="email" name="email" placeholder="Email">
 
-    <button type="submit">Se connecter</button>
+<input type="password" name="password" placeholder="Mot de passe">
+
+<button type="submit">Se connecter</button>
+
+
 </form>
+
+@endsection
