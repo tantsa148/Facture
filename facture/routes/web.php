@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\UtilisateurController;
 use App\Http\Controllers\MoisController;
-
+use App\Http\Controllers\ConsommationController;
 
 // ===============================
 // Routes accessibles sans connexion
@@ -46,6 +46,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/mois', [MoisController::class, 'index'])
         ->name('mois.index');
 
+    Route::get('/consommation/create', [ConsommationController::class, 'create'])
+        ->name('consommation.create');
+
+    Route::post('/consommation', [ConsommationController::class, 'store'])
+        ->name('consommation.store');
 
     // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout'])

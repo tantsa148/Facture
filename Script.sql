@@ -14,3 +14,7 @@ INSERT INTO mois (nom) VALUES
 ('Octobre'),
 ('Novembre'),
 ('Décembre');
+
+UPDATE mois
+SET nom = 'Decembre'
+WHERE id = 12;
