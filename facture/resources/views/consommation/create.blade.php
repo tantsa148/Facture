@@ -1,92 +1,303 @@
+```blade
 @extends('layouts.app')
 
 @section('title', 'Saisie des consommations')
 
 @section('content')
 
-    <h1>Saisie des consommations</h1>
+<style>
+    /* Carte principale */
+    .consommation-card {
+        width: 90%;
+        margin: 20px auto;
+    }
 
-    @if(session('success'))
-        <div>
-            {{ session('success') }}
+    /* En-tête */
+    .header-consommation {
+        width: 85%;
+        margin: 0 auto 20px auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-consommation .card-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .header-consommation .card-subtitle {
+        color: #6c757d;
+        font-weight: 400;
+        margin-bottom: 0;
+    }
+
+    /* Sélection du mois */
+    .mois-container {
+        width: 85%;
+        margin: 0 auto 25px auto;
+    }
+
+    .mois-container label {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    /* Tableau */
+    .consommation-table-container {
+        width: 85%;
+        margin: 0 auto;
+    }
+
+    .consommation-table {
+        width: 100%;
+        text-align: left;
+    }
+
+    .consommation-table th {
+        font-weight: 600;
+    }
+
+    .consommation-table td,
+    .consommation-table th {
+        vertical-align: middle;
+        padding: 12px 15px;
+    }
+
+    /* Colonnes */
+    .consommation-table th:first-child {
+        width: 60%;
+    }
+
+    .consommation-table th:last-child {
+        width: 40%;
+    }
+
+    /* Champ consommation */
+    .consommation-input {
+        max-width: 250px;
+    }
+
+    /* Bouton enregistrer */
+    .save-container {
+        width: 85%;
+        margin: 20px auto 0 auto;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+
+        .consommation-card {
+            width: 100%;
+            margin: 10px auto;
+        }
+
+        .header-consommation,
+        .mois-container,
+        .consommation-table-container,
+        .save-container {
+            width: 100%;
+        }
+
+        .header-consommation {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .save-container {
+            justify-content: flex-start;
+        }
+
+        .consommation-input {
+            max-width: 100%;
+        }
+    }
+</style>
+
+
+<div class="card consommation-card">
+
+    <div class="card-body">
+
+        {{-- En-tête --}}
+        <div class="header-consommation">
+
+            <div>
+
+                <h4 class="card-title">
+                    Saisie des consommations
+                </h4>
+
+                <h6 class="card-subtitle">
+                    Enregistrer la consommation de chaque utilisateur pour un mois donné.
+                </h6>
+
+            </div>
+
         </div>
-    @endif
 
-    @if($errors->any())
-        <div>
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 
-    <form method="POST" action="{{ route('consommation.store') }}">
+        {{-- Message de succès --}}
+        @if(session('success'))
 
-        @csrf
+            <div class="alert alert-success">
 
-        <div>
-            <label for="idmois">Mois :</label>
+                <i class="fa-solid fa-circle-check"></i>
 
-            <select name="idmois" id="idmois" required>
+                {{ session('success') }}
 
-                <option value="">-- Choisir un mois --</option>
+            </div>
 
-                @foreach($mois as $m)
-                    <option value="{{ $m->id }}">
-                        {{ $m->nom }}
+        @endif
+
+
+        {{-- Erreurs --}}
+        @if($errors->any())
+
+            <div class="alert alert-danger">
+
+                <strong>Veuillez corriger les erreurs suivantes :</strong>
+
+                <ul class="mb-0 mt-2">
+
+                    @foreach($errors->all() as $error)
+
+                        <li>
+                            {{ $error }}
+                        </li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
+
+
+        <form method="POST"
+              action="{{ route('consommation.store') }}">
+
+            @csrf
+
+
+            {{-- Sélection du mois --}}
+            <div class="mois-container">
+
+                <label for="idmois">
+                    Mois
+                </label>
+
+                <select
+                    name="idmois"
+                    id="idmois"
+                    class="form-control"
+                    required
+                >
+
+                    <option value="">
+                        -- Choisir un mois --
                     </option>
-                @endforeach
 
-            </select>
-        </div>
+                    @foreach($mois as $m)
 
-        <br>
+                        <option value="{{ $m->id }}"
+                            {{ old('idmois') == $m->id ? 'selected' : '' }}>
 
-        <table border="1">
+                            {{ $m->nom }}
 
-            <thead>
-                <tr>
-                    <th>Utilisateur</th>
-                    <th>Consommation</th>
-                </tr>
-            </thead>
+                        </option>
 
-            <tbody>
+                    @endforeach
 
-                @foreach($utilisateurs as $utilisateur)
+                </select>
 
-                    <tr>
+            </div>
 
-                        <td>
-                            {{ $utilisateur->nom }}
-                        </td>
 
-                        <td>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                name="consommations[{{ $utilisateur->id }}]"
-                                required
-                            >
-                        </td>
+            {{-- Tableau --}}
+            <div class="consommation-table-container">
 
-                    </tr>
+                <div class="table-responsive">
 
-                @endforeach
+                    <table class="table consommation-table">
 
-            </tbody>
+                        <thead>
 
-        </table>
+                            <tr>
 
-        <br>
+                                <th scope="col">
+                                    Utilisateur
+                                </th>
 
-        <button type="submit">
-            Enregistrer les consommations
-        </button>
+                                <th scope="col">
+                                    Consommation
+                                </th>
 
-    </form>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach($utilisateurs as $utilisateur)
+
+                                <tr>
+
+                                    <td>
+                                        {{ $utilisateur->nom }}
+                                    </td>
+
+                                    <td>
+
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            name="consommations[{{ $utilisateur->id }}]"
+                                            value="{{ old('consommations.' . $utilisateur->id) }}"
+                                            class="form-control consommation-input"
+                                            placeholder="0.00"
+                                            required
+                                        >
+
+                                    </td>
+
+                                </tr>
+
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            {{-- Bouton --}}
+            <div class="save-container">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Enregistrer les consommations
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 @endsection
+```

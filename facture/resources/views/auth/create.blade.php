@@ -5,212 +5,310 @@
 @section('content')
 
 <style>
-    body {
+    .register-page {
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
+        padding: 30px 20px;
     }
 
-    .container {
-        background: white;
-        width: 400px;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 25px;
-    }
-
-    .success {
-        background-color: #d4edda;
-        color: #155724;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 15px;
-    }
-
-    .errors {
-        background-color: #f8d7da;
-        color: #721c24;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 15px;
-    }
-
-    .errors ul {
-        margin: 5px 0 0 20px;
-        padding: 0;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    input {
+    .register-card {
         width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    input:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-
-    .field-error {
-        color: #dc3545;
-        font-size: 14px;
-        margin-top: 5px;
-    }
-
-    button {
-        width: 100%;
-        padding: 12px;
-        background-color: #007bff;
-        color: white;
+        max-width: 450px;
         border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
+        border-radius: 10px;
     }
 
-    button:hover {
-        background-color: #0056b3;
+    .register-card .card-body {
+        padding: 35px;
+    }
+
+    .register-icon {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .register-icon i {
+        font-size: 45px;
+        color: #4f46e5;
+    }
+
+    .register-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .register-subtitle {
+        text-align: center;
+        color: #6c757d;
+        margin-bottom: 30px;
+    }
+
+    .form-group label {
+        font-weight: 500;
+    }
+
+    .input-group-text {
+        background: #f8f9fa;
+    }
+
+    .register-button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
     }
 </style>
 
-<div class="container">
 
+<div class="register-page">
 
-<h1>Créer un compte</h1>
+    <div class="card shadow-sm register-card">
 
-{{-- Message de succès --}}
-@if (session('success'))
-    <div class="success">
-        {{ session('success') }}
-    </div>
-@endif
+        <div class="card-body">
 
-{{-- Erreurs générales --}}
-@if ($errors->any())
-    <div class="errors">
-        <strong>Veuillez corriger les erreurs :</strong>
+            {{-- Icône --}}
+            <div class="register-icon">
 
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+                <i class="fa-solid fa-user-plus"></i>
 
-{{-- Formulaire --}}
-<form method="POST" action="/users">
-
-    @csrf
-
-    {{-- Nom --}}
-    <div class="form-group">
-
-        <label for="name">Nom</label>
-
-        <input
-            type="text"
-            id="name"
-            name="name"
-            value="{{ old('name') }}"
-            placeholder="Entrez votre nom"
-        >
-
-        @error('name')
-            <div class="field-error">
-                {{ $message }}
             </div>
-        @enderror
+
+
+            {{-- Titre --}}
+            <h3 class="register-title">
+                Créer un compte
+            </h3>
+
+            <p class="register-subtitle">
+                Créez votre compte pour accéder à l'application
+            </p>
+
+
+            {{-- Message de succès --}}
+            @if(session('success'))
+
+                <div class="alert alert-success">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    {{ session('success') }}
+
+                </div>
+
+            @endif
+
+
+            {{-- Erreurs générales --}}
+            @if($errors->any())
+
+                <div class="alert alert-danger">
+
+                    <strong>
+                        Veuillez corriger les erreurs :
+                    </strong>
+
+                    <ul class="mb-0 mt-2">
+
+                        @foreach($errors->all() as $error)
+
+                            <li>
+                                {{ $error }}
+                            </li>
+
+                        @endforeach
+
+                    </ul>
+
+                </div>
+
+            @endif
+
+
+            {{-- Formulaire --}}
+            <form method="POST"
+                  action="{{ url('/users') }}">
+
+                @csrf
+
+
+                {{-- Nom --}}
+                <div class="form-group">
+
+                    <label for="name">
+                        Nom
+                    </label>
+
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ old('name') }}"
+                            class="form-control"
+                            placeholder="Entrez votre nom"
+                            required
+                        >
+
+                    </div>
+
+                    @error('name')
+
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+
+                    @enderror
+
+                </div>
+
+
+                {{-- Email --}}
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-envelope"></i>
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            class="form-control"
+                            placeholder="Entrez votre email"
+                            required
+                        >
+
+                    </div>
+
+                    @error('email')
+
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+
+                    @enderror
+
+                </div>
+
+
+                {{-- Mot de passe --}}
+                <div class="form-group">
+
+                    <label for="password">
+                        Mot de passe
+                    </label>
+
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Entrez votre mot de passe"
+                            required
+                        >
+
+                    </div>
+
+                    @error('password')
+
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+
+                    @enderror
+
+                </div>
+
+
+                {{-- Confirmation --}}
+                <div class="form-group">
+
+                    <label for="password_confirmation">
+                        Confirmer le mot de passe
+                    </label>
+
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="password"
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            class="form-control"
+                            placeholder="Confirmez votre mot de passe"
+                            required
+                        >
+
+                    </div>
+
+                    @error('password_confirmation')
+
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+
+                    @enderror
+
+                </div>
+
+
+                {{-- Bouton --}}
+                <button type="submit"
+                        class="btn btn-primary register-button">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Créer le compte
+
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
-
-    {{-- Email --}}
-    <div class="form-group">
-
-        <label for="email">Email</label>
-
-        <input
-            type="email"
-            id="email"
-            name="email"
-            value="{{ old('email') }}"
-            placeholder="Entrez votre email"
-        >
-
-        @error('email')
-            <div class="field-error">
-                {{ $message }}
-            </div>
-        @enderror
-
-    </div>
-
-    {{-- Mot de passe --}}
-    <div class="form-group">
-
-        <label for="password">Mot de passe</label>
-
-        <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Entrez votre mot de passe"
-        >
-
-        @error('password')
-            <div class="field-error">
-                {{ $message }}
-            </div>
-        @enderror
-
-    </div>
-
-    {{-- Confirmation --}}
-    <div class="form-group">
-
-        <label for="password_confirmation">
-            Confirmer le mot de passe
-        </label>
-
-        <input
-            type="password"
-            id="password_confirmation"
-            name="password_confirmation"
-            placeholder="Confirmez votre mot de passe"
-        >
-
-        @error('password_confirmation')
-            <div class="field-error">
-                {{ $message }}
-            </div>
-        @enderror
-
-    </div>
-
-    <button type="submit">
-        Créer le compte
-    </button>
-
-</form>
 
 </div>
 
 @endsection
+

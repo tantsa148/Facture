@@ -1,30 +1,50 @@
 <div class="sidebar">
-    <h2>Mon Application</h2>
+
+    <h2>Facture</h2>
+
+    <ul class="sidebar-menu">
+
+        {{-- Dashboard --}}
+        <li>
+            <a href="{{ url('/dashboard') }}"
+               class="{{ request()->is('dashboard') ? 'active' : '' }}">
+                Dashboard
+            </a>
+        </li>
 
 
-<ul class="sidebar-menu">
-    <li>
-        <a href="{{ url('/dashboard') }}">
-            Dashboard
-        </a>
-    </li>
+        {{-- Utilisateurs --}}
+        <li>
+            <a href="{{ url('/utilisateur') }}"
+               class="{{ request()->is('utilisateur*') ? 'active' : '' }}">
+                Utilisateurs
+            </a>
+        </li>
 
-    <li>
-        <a href="{{ url('/utilisateur') }}">
-            Utilisateurs
-        </a>
-    </li>
 
-    <li>
-        <form method="POST" action="{{ url('/logout') }}">
-            @csrf
-            <button type="submit">
-                Déconnexion
-            </button>
-        </form>
-    </li>
-</ul>
+        {{-- Consommations --}}
+        <li>
+            <a href="{{ route('consommation.create') }}"
+               class="{{ request()->is('consommation/create') ? 'active' : '' }}">
+                Consommations
+            </a>
+        </li>
 
+
+        {{-- Déconnexion --}}
+        <li>
+            <form method="POST" action="{{ url('/logout') }}">
+
+                @csrf
+
+                <button type="submit">
+                    Déconnexion
+                </button>
+
+            </form>
+        </li>
+
+    </ul>
 
 </div>
 
@@ -35,7 +55,7 @@
         top: 0;
         width: 250px;
         height: 100vh;
-        background: #222;
+        background: #110c3a;
         color: white;
         padding: 20px;
     }
@@ -50,12 +70,24 @@
     }
 
     .sidebar-menu li {
-        margin-bottom: 15px;
+        margin-bottom: 8px;
     }
 
     .sidebar-menu a {
+        display: block;
         color: white;
         text-decoration: none;
+        padding: 12px 15px;
+        border-radius: 6px;
+    }
+
+    .sidebar-menu a.active {
+        background: #4f46e5;
+        color: white;
+    }
+
+    .sidebar-menu a:hover {
+        background: #312b66;
     }
 
     .sidebar-menu button {
@@ -63,7 +95,7 @@
         border: none;
         color: white;
         cursor: pointer;
-        padding: 0;
+        padding: 12px 15px;
         font-size: 16px;
     }
 
