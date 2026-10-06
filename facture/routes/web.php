@@ -8,9 +8,6 @@ use App\Http\Controllers\UtilisateurController;
 use App\Http\Controllers\MoisController;
 use App\Http\Controllers\ConsommationController;
 
-// ===============================
-// Routes accessibles sans connexion
-// ===============================
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,23 +23,16 @@ Route::get('/users/create', [UserController::class, 'create']);
 Route::post('/users', [UserController::class, 'store']);
 
 
-// ===============================
-// utilisateur est connecté
-// ===============================
-
 Route::middleware('auth')->group(function () {
 
-    // Dashboard
+   
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-
-    // Utilisateur
+   
     Route::resource('utilisateur', UtilisateurController::class);
 
 
-    // Mois : lecture seulement
     Route::get('/mois', [MoisController::class, 'index'])
         ->name('mois.index');
 
@@ -51,8 +41,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/consommation', [ConsommationController::class, 'store'])
         ->name('consommation.store');
+    
+        Route::get('/consommation', [ConsommationController::class, 'index'])
+        ->name('consommation.index');
 
-    // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 

@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.app')
 
 @section('title', 'Saisie des consommations')
@@ -185,37 +184,79 @@
 
 
             {{-- Sélection du mois --}}
+            {{-- Sélection de l'année et du mois --}}
             <div class="mois-container">
 
-                <label for="idmois">
-                    Mois
-                </label>
+                {{-- Année --}}
+                <div class="mb-3">
 
-                <select
-                    name="idmois"
-                    id="idmois"
-                    class="form-control"
-                    required
-                >
+                    <label for="annee">
+                        Année
+                    </label>
 
-                    <option value="">
-                        -- Choisir un mois --
-                    </option>
+                    <select
+                        name="annee"
+                        id="annee"
+                        class="form-control"
+                        required
+                    >
 
-                    @foreach($mois as $m)
-
-                        <option value="{{ $m->id }}"
-                            {{ old('idmois') == $m->id ? 'selected' : '' }}>
-
-                            {{ $m->nom }}
-
+                        <option value="">
+                            -- Choisir une année --
                         </option>
 
-                    @endforeach
+                        @for($annee = 2030; $annee >= 2020; $annee--)
 
-                </select>
+                            <option value="{{ $annee }}"
+                                {{ old('annee', date('Y')) == $annee ? 'selected' : '' }}>
+
+                                {{ $annee }}
+
+                            </option>
+
+                        @endfor
+
+                    </select>
+
+                </div>
+
+
+                {{-- Mois --}}
+                <div>
+
+                    <label for="idmois">
+                        Mois
+                    </label>
+
+                    <select
+                        name="idmois"
+                        id="idmois"
+                        class="form-control"
+                        required
+                    >
+
+                        <option value="">
+                            -- Choisir un mois --
+                        </option>
+
+                        @foreach($mois as $m)
+
+                            <option value="{{ $m->id }}"
+                                {{ old('idmois') == $m->id ? 'selected' : '' }}>
+
+                                {{ $m->nom }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                </div>
 
             </div>
+
+
 
 
             {{-- Tableau --}}
@@ -300,4 +341,3 @@
 </div>
 
 @endsection
-```

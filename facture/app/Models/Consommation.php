@@ -13,6 +13,7 @@ class Consommation extends Model
     protected $fillable = [
         'idutilisateur',
         'idmois',
+        'annee',
         'consommation',
     ];
 
@@ -26,3 +27,4 @@ class Consommation extends Model
         return $this->belongsTo(Mois::class, 'idmois');
     }
 }
+

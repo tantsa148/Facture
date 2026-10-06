@@ -26,10 +26,17 @@
         <li>
             <a href="{{ route('consommation.create') }}"
                class="{{ request()->is('consommation/create') ? 'active' : '' }}">
-                Consommations
+                Saisie des consommations
             </a>
         </li>
 
+        {{-- Consommations --}}
+        <li>
+            <a href="{{ route('consommation.index') }}"
+            class="{{ request()->routeIs('consommation.index') ? 'active' : '' }}">
+                Liste des consommations
+            </a>
+        </li>
 
         {{-- Déconnexion --}}
         <li>
