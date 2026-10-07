@@ -319,6 +319,30 @@
 
             </div>
 
+            <div class="mois-container mt-4">
+
+                <div class="mb-3">
+
+                    <label for="cout">
+                        Coût total
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        name="cout"
+                        id="cout"
+                        class="form-control"
+                        value="{{ old('cout') }}"
+                        placeholder="0.00"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
 
             {{-- Bouton --}}
             <div class="save-container">

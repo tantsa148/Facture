@@ -90,18 +90,47 @@
                 {{-- Bouton --}}
                 <div class="col-md-4 d-flex align-items-end">
 
-                    <button
+    {{-- Bouton Afficher --}}
+                <button
                         type="submit"
                         class="btn btn-primary"
                     >
-
                         <i class="fa-solid fa-filter"></i>
-
                         Afficher
-
                     </button>
 
+
+                    @if(request()->filled('annee') && request()->filled('idmois'))
+
+                        {{-- Premier PDF --}}
+                        <a
+                            href="{{ route('consommation.pdf', [
+                                'annee' => request('annee'),
+                                'idmois' => request('idmois')
+                            ]) }}"
+                            class="btn btn-danger ms-2"
+                        >
+                            <i class="fa-solid fa-file-pdf"></i>
+                            Exporter PDF
+                        </a>
+
+
+                        {{-- Nouveau PDF --}}
+                        <a
+                            href="{{ route('consommation.releves.pdf', [
+                                'annee' => request('annee'),
+                                'idmois' => request('idmois')
+                            ]) }}"
+                            class="btn btn-success ms-2"
+                        >
+                            <i class="fa-solid fa-file-pdf"></i>
+                            Relevés PDF
+                        </a>
+
+                    @endif
+
                 </div>
+            </div>
 
             </div>
 
@@ -118,14 +147,26 @@
                     <table class="table table-bordered">
 
                         <thead>
+                            <th>
+                                Utilisateur
+                            </th>
+                        <th>
+                            {{ $moisPrecedent->nom }}/{{ $anneePrecedente }}
+                        </th>
 
-                            <tr>
-                                <th>Utilisateur</th>
-                                <th>Mois</th>
-                                <th>Année</th>
-                                <th>Consommation</th>
-                            </tr>
+                        <th>
+                            {{ $moisSelectionne->nom }}/{{ request('annee') }}
+                        </th>
 
+                        <th>
+                            Différence
+                        </th>
+                        <th>
+                            Pourcentage
+                        </th>
+                        <th>
+                            Coût total
+                        </th>
                         </thead>
 
                         <tbody>
@@ -137,15 +178,9 @@
                                     <td>
                                         {{ $consommation->utilisateur->nom }}
                                     </td>
-
                                     <td>
-                                        {{ $consommation->mois->nom }}
+                                            {{ $consommation->consommation_precedente ?? '-' }}
                                     </td>
-
-                                    <td>
-                                        {{ $consommation->annee }}
-                                    </td>
-
                                     <td>
                                         {{ number_format(
                                             $consommation->consommation,
@@ -154,13 +189,68 @@
                                             ' '
                                         ) }}
                                     </td>
+                                    <td>
+                                        {{ $consommation->difference !== null
+                                            ? number_format(
+                                                $consommation->difference,
+                                                2,
+                                                ',',
+                                                ' '
+                                            )
+                                            : '-' }}
+                                    </td>
 
+                                    <td>
+                                        {{ $consommation->pourcentage_difference !== null
+                                            ? number_format(
+                                                $consommation->pourcentage_difference,
+                                                2,
+                                                ',',
+                                                ' '
+                                            ) . ' %'
+                                            : '-' }}
+                                    </td>
+                                      <td>
+                                        {{ $consommation->cout_utilisateur !== null
+                                            ? number_format(
+                                                $consommation->cout_utilisateur,
+                                                2,
+                                                ',',
+                                                ' '
+                                            )
+                                            : '-' }}
+                                    </td>
                                 </tr>
 
                             @endforeach
 
                         </tbody>
+                        <tfoot class="table-light">
 
+                            <tr>
+                                <th colspan="3" class="text-end">
+                                    Somme
+                                </th>
+
+                                <th>
+                                    {{ number_format(
+                                        $sommeDifference,
+                                        2,
+                                        ',',
+                                        ' '
+                                    ) }}
+                                </th>
+
+                                <th>
+                                    100 %
+                                </th>
+                                <th>
+                                     {{ $cout ? number_format( $cout->cout, 2, ',', ' ' ) : '-' }} 
+                                </th>
+                                
+                            </tr>
+
+                        </tfoot>
                     </table>
 
                 </div>
